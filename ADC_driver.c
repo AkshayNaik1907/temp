@@ -1,8 +1,8 @@
 #include<lpc17xx.h>
 #include "ADC_driver.h"
+//Added this comment
 
 volatile uint32 *adcr=(volatile uint32 *)ADCR_BaseAddr;
-
 void ADC_Init(uint8 adcClock_MHz,uint8 pclk){
     volatile uint32 *powercontrol = (volatile uint32 *)PowerControl_Addr;
     volatile uint32 *peripheralclock = (volatile uint32 *)PeripheralClock_Addr;
