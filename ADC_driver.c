@@ -75,6 +75,8 @@ uint16_t ADC_ReadValue(uint8 channel){
     return (uint16_t)adc_temp;
 }
 
+
+
 void ADC_Delay(void){
     unsigned long long i;
     for(i=0;i<6500000;i++);
