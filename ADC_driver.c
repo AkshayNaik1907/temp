@@ -18,6 +18,8 @@ void ADC_Init(uint8 adcClock_MHz,uint8 pclk){
 }
 											
 
+
+
 uint16_t ADC_ReadValue(uint8 channel){
 		uint32_t adc_temp;	
 		volatile uint32 *pinsel0 = (volatile uint32 *)PINSEL0_Addr;
