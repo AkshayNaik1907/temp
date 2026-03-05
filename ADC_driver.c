@@ -16,7 +16,7 @@ void ADC_Init(uint8 adcClock_MHz,uint8 pclk){
 		clkdiv=(pclk*1000000/(adcClock_MHz*1000000))- 1;
     *adcr=(1 << 21)|((clkdiv & 0xFF)<<8);
 }
-
+			
 
 uint16_t ADC_ReadValue(uint8 channel){
 		uint32_t adc_temp;	
