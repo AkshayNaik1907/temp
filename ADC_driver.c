@@ -65,9 +65,9 @@ uint16_t ADC_ReadValue(uint8 channel){
 		*adcr &= ~(0xFF);  // Clear any previously selected channels
     *adcr |= (1<<channel); // Select ADC channel
     *adcr |= (1<<24); // Start conversion now
-		if(channel>7){
-				adc_temp=0;
-		}
+	if(channel>7){
+		adc_temp=0;
+	}
     while((*addr_reg&0x80000000)==0); //Wait until the conversion is complete
     adc_temp=*addr_reg;
     adc_temp>>=4;
@@ -79,5 +79,5 @@ uint16_t ADC_ReadValue(uint8 channel){
 
 void ADC_Delay(void){
     unsigned long long i;
-    for(i=0;i<6500000;i++);
+   for(i=0;i<6500000;i++);
 }
