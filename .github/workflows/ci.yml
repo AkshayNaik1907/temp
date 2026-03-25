@@ -12,8 +12,6 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
-      with:
-        ref: JenkinsBranch
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -23,7 +21,17 @@ jobs:
     - name: Install dependencies (if any)
       run: |
         python -m pip install --upgrade pip
+        # If you have requirements.txt, uncomment below
+        # pip install -r requirements.txt
 
-    - name: Run Python Script
+    - name: Run Python Script and save output
       run: |
-        python scripts/find_tabs.py
+        echo "Starting script execution..."
+        python scripts/find_tabs.py | tee output.txt
+        echo "Script execution completed."
+
+    - name: Upload output file
+      uses: actions/upload-artifact@v3
+      with:
+        name: script-output
+        path: output.txt
