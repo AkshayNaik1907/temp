@@ -16,4 +16,6 @@ void ADC_Init(uint8 ,uint8);
 uint16 ADC_ReadValue(uint8 ); 
 void ADC_Delay(void);
 
+
+
 #endif

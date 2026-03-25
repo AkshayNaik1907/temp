@@ -63,7 +63,7 @@ uint16_t ADC_ReadValue(uint8 channel){
             break;
 		}
 		*adcr &= ~(0xFF);  // Clear any previously selected channels
-    *adcr |= (1<<channel); // Select ADC channel
+		*adcr |= (1<<channel); // Select ADC channel
     *adcr |= (1<<24); // Start conversion now
 	if(channel>7){
 		adc_temp=0;
