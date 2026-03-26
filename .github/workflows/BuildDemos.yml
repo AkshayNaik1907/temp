@@ -1,6 +1,9 @@
 name: Build All Demos
 
 on:
+  push:
+    branches:
+      - JenkinsBranch
   schedule:
     - cron: '30 12 * * *' # Run daily at 8PM
   workflow_dispatch:
