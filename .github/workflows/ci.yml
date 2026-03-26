@@ -3,7 +3,7 @@ name: Python Script CI
 on:
   workflow_dispatch:
   schedule:
-    - cron: '22 11 * * *'  
+    - cron: '55 11 * * *'  
 
 jobs:
   run-script:
@@ -19,7 +19,14 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
-
+    
+    - name: Show runner time
+      run: |
+        echo "Current UTC time:"
+        date -u
+        echo "Current IST time:"
+        date -u -d "+5 hours 30 minutes"
+        
     - name: Run Python Script and save output
       run: |
         echo "Starting script execution..."
