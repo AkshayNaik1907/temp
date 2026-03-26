@@ -1,0 +1,48 @@
+name: Build All Demos
+
+on:
+  schedule:
+    - cron: '30 12 * * *' # Run daily at 8PM
+  workflow_dispatch:
+
+jobs:
+  GetAllDemos:
+    runs-on: windows-latest
+    
+    outputs:
+      DemoList: ${{ steps.set-matrix.outputs.DemoList }}
+    
+    steps:
+    - name: Checkout repository 
+      uses: actions/checkout@v4
+      
+    - name: Generate Demo list # Get all the demos from the Demo folder
+      id: set-matrix
+      shell: powershell
+      run: | 
+        $Demos = (Get-ChildItem Demo -Directory).Name 
+        $json = $Demos | ConvertTo-Json -Compress 
+        "DemoList=$json" >> $env:GITHUB_OUTPUT
+      
+  Build:
+    needs: GetAllDemos
+    runs-on: windows-latest
+    
+    strategy:
+      matrix:
+        Demo: ${{ fromJson(needs.GetAllDemos.outputs.DemoList) }}
+    
+    steps:
+      - name: Checkout repository 
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      
+      - name: Install Dependencies # Install required Python libraries
+        run: .\setup.bat
+        
+      - name: Build Demo # Build all the demos
+        run: .\run.bat build ${{ matrix.Demo }}
