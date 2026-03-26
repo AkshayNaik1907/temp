@@ -3,7 +3,7 @@ name: Python Script CI
 on:
   workflow_dispatch:
   schedule:
-    - cron: '10 5 * * *'  
+    - cron: '22 11 * * *'  
 
 jobs:
   run-script:
