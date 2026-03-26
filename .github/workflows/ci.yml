@@ -2,7 +2,7 @@ name: Python Script CI
 
 on:
   schedule:
-    -  cron: '42 4 * * *'
+    - cron: '58 4 * * *'
 
 jobs:
   run-script:
