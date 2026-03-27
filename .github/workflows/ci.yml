@@ -1,9 +1,13 @@
 name: Python Script CI
 
+# Give workflow permission to push changes
+permissions:
+  contents: write
+
 on:
   push:
     branches:
-      - JenkinsBranch
+      - main
   schedule:
     - cron: '30 1 * * *'
 
@@ -12,16 +16,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Checkout the branch
     - name: Checkout JenkinsBranch
       uses: actions/checkout@v4
       with:
         ref: JenkinsBranch
+        persist-credentials: true
 
+    # Set up Python
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     
+    # Show runner time
     - name: Show runner time
       run: |
         echo "Current UTC time:"
@@ -29,27 +37,33 @@ jobs:
         echo "Current IST time:"
         date -u -d "+5 hours 30 minutes"
         
+    # Run Python script and save output
     - name: Run Python Script and save output
       run: |
         echo "Starting script execution..."
         python scripts/find_tabs.py | tee output.txt
         echo "Script execution completed."
-        
+
+    # Update README.md with latest output
     - name: Update README with output
       run: |
-        # Insert output at the end of README.md or customize as needed
+        # Remove old script output section if exists
+        sed -i '/## Latest Script Output/,$d' README.md || true
+        
+        # Append new output
         echo -e "\n## Latest Script Output\n" >> README.md
         cat output.txt >> README.md
-        
+
         # Configure git
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        
+
         # Commit and push changes
         git add README.md
         git commit -m "Update README with latest script output [skip ci]" || echo "No changes to commit"
         git push origin JenkinsBranch
-        
+
+    # Upload output as artifact
     - name: Upload output file
       uses: actions/upload-artifact@v4
       with:
