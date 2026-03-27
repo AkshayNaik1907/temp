@@ -34,7 +34,22 @@ jobs:
         echo "Starting script execution..."
         python scripts/find_tabs.py | tee output.txt
         echo "Script execution completed."
-
+        
+    - name: Update README with output
+      run: |
+        # Insert output at the end of README.md or customize as needed
+        echo -e "\n## Latest Script Output\n" >> README.md
+        cat output.txt >> README.md
+        
+        # Configure git
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        
+        # Commit and push changes
+        git add README.md
+        git commit -m "Update README with latest script output [skip ci]" || echo "No changes to commit"
+        git push origin JenkinsBranch
+        
     - name: Upload output file
       uses: actions/upload-artifact@v4
       with:
