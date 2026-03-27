@@ -3,7 +3,7 @@ name: Python Script CI
 on:
   push:
     branches:
-      - main
+      - JenkinsBranch
   schedule:
     - cron: '30 1 * * *'
 
