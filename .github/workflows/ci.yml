@@ -75,6 +75,6 @@ jobs:
         username: ${{ secrets.EMAIL_USERNAME }}
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: "Greeting from GitHub Actions"
-        body: "Hi"
+        body: "Hi" 
         to: "nakshay530@gmail.com"
         from: "chessnitro@gmail.com"
