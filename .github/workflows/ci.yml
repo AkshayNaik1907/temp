@@ -49,13 +49,6 @@ jobs:
     - name: Update README with output
       shell: powershell
       run: |
-        # Remove old script output section if exists
-        sed -i '/## Latest Script Output/,$d' README.md || true
-        
-        # Append new output
-        echo -e "\n## Latest Script Output\n" >> README.md
-        cat output.txt >> README.md
-        
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         
