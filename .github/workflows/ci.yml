@@ -59,7 +59,7 @@ jobs:
         
         git add README.md
         git commit -m "Update build status [CI]" || echo "No changes"
-        git pull --rebase origin dev_main
+        git pull --rebase origin main
         git push origin main
 
     # Upload output as artifact
