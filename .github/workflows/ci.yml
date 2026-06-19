@@ -66,37 +66,24 @@ jobs:
         name: script-output
         path: output.txt
         
-    - name: Send Email (Python SMTP)
-      shell: bash
+    - name: Create email script
       run: |
-        python - <<'EOF'
+        cat > send_mail.py << 'EOF'
         import smtplib
         from email.mime.text import MIMEText
-        
         sender = "chessnitro@gmail.com"
         receiver = "nakshay530@gmail.com"
         password = "${{ secrets.EMAIL_PASSWORD }}"
-        
         msg = MIMEText("Hi from GitHub Actions")
         msg["Subject"] = "Greeting from GitHub Actions"
         msg["From"] = sender
         msg["To"] = receiver
-        
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()
         server.login(sender, password)
         server.send_message(msg)
         server.quit()
-        EOF  
+        EOF
         
     - name: Send Email
-      uses: dawidd6/action-send-mail@v4
-      with:
-        server_address: smtp.gmail.com
-        server_port: 587
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: "Greeting from GitHub Actions"
-        body: "Hi" 
-        to: "nakshay530@gmail.com"
-        from: "chessnitro@gmail.com"
+      run: python send_mail.py
