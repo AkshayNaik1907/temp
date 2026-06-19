@@ -67,8 +67,9 @@ jobs:
         path: output.txt
         
     - name: Send Email (Python SMTP)
+      shell: bash
       run: |
-        python - <<EOF
+        python - <<'EOF'
         import smtplib
         from email.mime.text import MIMEText
         
