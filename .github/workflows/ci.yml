@@ -20,6 +20,9 @@ jobs:
     # Checkout the branch
     - name: Checkout JenkinsBranch
       uses: actions/checkout@v4
+      with:
+        ref: JenkinsBranch
+        persist-credentials: true
 
     # Set up Python
     - name: Set up Python
@@ -44,20 +47,27 @@ jobs:
 
     # Update README.md with latest output
     - name: Update README with output
-      shell: pwsh
+      shell: powershell
       run: |
+        # Remove old script output section if exists
+        sed -i '/## Latest Script Output/,$d' README.md || true
+        
+        # Append new output
+        echo -e "\n## Latest Script Output\n" >> README.md
+        cat output.txt >> README.md
+        
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         
-        git stash push -m "build-update" || true
-        git pull --rebase origin main
+        git stash push -m "build-update" || $true
+        git pull --rebase origin dev_main
         
-        git stash pop || true
+        git stash pop || $true
         
-        git add output.txt
+        git add README.md
         git commit -m "Update build status [CI]" || echo "No changes"
-        git pull --rebase origin main
-        git push origin main
+        git pull --rebase origin dev_main
+        git push origin dev_main
 
     # Upload output as artifact
     - name: Upload output file
@@ -66,24 +76,14 @@ jobs:
         name: script-output
         path: output.txt
         
-    - name: Create email script
-      run: |
-        cat > send_mail.py << 'EOF'
-        import smtplib
-        from email.mime.text import MIMEText
-        sender = "chessnitro@gmail.com"
-        receiver = "nakshay530@gmail.com"
-        password = "${{ secrets.EMAIL_PASSWORD }}"
-        msg = MIMEText("Hi from GitHub Actions")
-        msg["Subject"] = "Greeting from GitHub Actions"
-        msg["From"] = sender
-        msg["To"] = receiver
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.starttls()
-        server.login(sender, password)
-        server.send_message(msg)
-        server.quit()
-        EOF
-        
     - name: Send Email
-      run: python send_mail.py
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: "Greeting from GitHub Actions"
+        body: "Hi" 
+        to: "nakshay530@gmail.com"
+        from: "chessnitro@gmail.com"
