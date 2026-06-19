@@ -7,7 +7,7 @@ permissions:
 on:
   push:
     branches:
-      - JenkinsBranch
+      - main
   schedule:
     - cron: '30 1 * * *'
   workflow_dispatch:
@@ -20,9 +20,6 @@ jobs:
     # Checkout the branch
     - name: Checkout JenkinsBranch
       uses: actions/checkout@v4
-      with:
-        ref: JenkinsBranch
-        persist-credentials: true
 
     # Set up Python
     - name: Set up Python
@@ -69,7 +66,7 @@ jobs:
         path: output.txt
         
     - name: Send Email
-      uses: dawidd6/action-send-mail@v3
+      uses: dawidd6/action-send-mail@v4
       with:
         server_address: smtp.gmail.com
         server_port: 587
