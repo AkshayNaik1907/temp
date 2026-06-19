@@ -53,14 +53,14 @@ jobs:
         git config user.email "github-actions@github.com"
         
         git stash push -m "build-update" || Out-Null
-        git pull --rebase origin dev_main
+        git pull --rebase origin main
         
         git stash pop || Out-Null
         
         git add README.md
         git commit -m "Update build status [CI]" || echo "No changes"
         git pull --rebase origin dev_main
-        git push origin dev_main
+        git push origin main
 
     # Upload output as artifact
     - name: Upload output file
