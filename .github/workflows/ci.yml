@@ -47,15 +47,15 @@ jobs:
 
     # Update README.md with latest output
     - name: Update README with output
-      shell: powershell
+      shell: pwsh
       run: |
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         
-        git stash push -m "build-update" || true
+        git stash push -m "build-update" || Out-Null
         git pull --rebase origin dev_main
         
-        git stash pop || true
+        git stash pop || Out-Null
         
         git add README.md
         git commit -m "Update build status [CI]" || echo "No changes"
