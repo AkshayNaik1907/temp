@@ -85,5 +85,5 @@ jobs:
         server.quit()
         EOF
         
-- name: Send Email
-  run: python send_mail.py
+    - name: Send Email
+      run: python send_mail.py
