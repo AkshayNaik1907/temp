@@ -20,9 +20,6 @@ jobs:
     # Checkout the branch
     - name: Checkout JenkinsBranch
       uses: actions/checkout@v4
-      with:
-        ref: JenkinsBranch
-        persist-credentials: true
 
     # Set up Python
     - name: Set up Python
